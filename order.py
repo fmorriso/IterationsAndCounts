@@ -32,6 +32,7 @@ class Order:
         Order.order_id += 1
         self.selections = ["", "", "", 0, 0.0]
         self.costs: list[float] = [0.0, 0.0, 0.0, 0.0]
+        self.gets_discount: bool = False
 
     # toString()
     def __str__(self) -> str:
@@ -48,6 +49,16 @@ class Order:
         # include french fries size and cost
         if self.selections[Order.FRIES_IDX] != '':
             tostring += f'A {self.selections[Order.FRIES_IDX]} order of french fries for ${self.costs[Order.FRIES_IDX]:.2f}\n'
+
+        # include ketchup packets count and cost
+        if self.selections[Order.KETCHUP_IDX] > 0:
+            tostring += f'{self.selections[Order.KETCHUP_IDX]} ketchup packets for ${self.costs[Order.KETCHUP_IDX]:.2f}\n'
+
+        # show discount message when applicable
+        if self.gets_discount:
+            subtotal: float = self.selections[Order.TOTAL_IDX] + 1
+            tostring += f'Subtotal before discount: ${subtotal:.2f}\n'
+            tostring += 'You received a discount of $1 because you ordered a combo.\n'
 
         # include total cost of the order
         tostring += f'Total: ${self.selections[Order.TOTAL_IDX]:.2f}'
@@ -195,4 +206,28 @@ class Order:
                 self.selections[Order.TOTAL_IDX] += price  
 
     def ask_ketchup_choice(self):
-        pass
+        category: str = 'ketchup'
+        ketchupPackets: int = 0
+
+        needChoice: bool = True
+        while needChoice:
+            response = input("How many ketchup packets would you like (up to 10)? Enter 0 if you don't want any.>")
+            if response.isnumeric() and 10 >= int(response) >= 0:
+                needChoice = False
+                ketchupPackets = int(response)
+            else:
+                print('Invalid response. Try again.')
+
+        self.selections[Order.KETCHUP_IDX] = ketchupPackets
+        if ketchupPackets > 0:
+            price: float = ketchupPackets * Order.menu[category]
+            self.costs[Order.KETCHUP_IDX] = price
+            self.selections[Order.TOTAL_IDX] += price
+
+    def check_for_discount(self):
+        if self.selections[Order.SANDWICH_IDX] == '' or \
+                self.selections[Order.BEVERAGE_IDX] == '' \
+                or self.selections[Order.FRIES_IDX] == '':
+            return
+        self.gets_discount = True
+        self.selections[Order.TOTAL_IDX] -= 1

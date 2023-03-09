@@ -7,26 +7,6 @@
 import sys
 
 from order import Order
-def getKetchupPackets(menu, costs, order, idx, total_idx):
-    total: float = order[total_idx]
-    category: str = 'ketchup'
-    ketchupPackets: int = 0
-
-    needChoice: bool = True
-    while needChoice:
-        response = input("How many ketchup packets would you like (up to 10)? Enter 0 if you don't want any.>")
-        if response.isnumeric() and 10 >= int(response) >= 0:
-            needChoice = False
-            ketchupPackets = int(response)
-        else:
-            print('Invalid response. Try again.')
-
-    order[idx] = ketchupPackets
-    if ketchupPackets > 0:
-        costs[idx] = ketchupPackets * menu[category]
-        total += costs[idx]
-
-    order[total_idx] = total
 
 
 def getOrder():
@@ -35,6 +15,7 @@ def getOrder():
     order.ask_beverage_choice()
     order.ask_fries_choice()
     order.ask_ketchup_choice()
+    order.check_for_discount()
     return order
 
 
@@ -57,6 +38,7 @@ def getOrders():
                     keepOrdering = False
                 case _:
                     print('Invalid response.  Valid responses are yes or no')
+
 
 def getOrdersNew():
     #  sandwich = 0, beverage = 1, fries = 2, ketchup =3, total = 4
@@ -86,37 +68,6 @@ def getOrdersNew():
         },
         'ketchup': 0.25
     }
-
-    getSandwich(menu, costs, order, SANDWICH_IDX, TOTAL_IDX)
-    getBeverage(menu, costs, order, BEVERAGE_IDX, TOTAL_IDX)
-    getFrenchFries(menu, costs, order, FRIES_IDX, TOTAL_IDX)
-    getKetchupPackets(menu, costs, order, KETCHUP_IDX, TOTAL_IDX)
-
-    printFinalOrder(BEVERAGE_IDX, FRIES_IDX, KETCHUP_IDX, SANDWICH_IDX, TOTAL_IDX, costs, order)
-
-
-def printFinalOrder(BEVERAGE_IDX, FRIES_IDX, KETCHUP_IDX, SANDWICH_IDX, TOTAL_IDX, costs, order):
-    print('Your order:')
-
-    if order[SANDWICH_IDX] != "":
-        print(f'A {order[SANDWICH_IDX]} sandwich for ${costs[SANDWICH_IDX]:.2f}')
-
-    if order[BEVERAGE_IDX] != "":
-        print(f'A {order[BEVERAGE_IDX]} beverage for ${costs[BEVERAGE_IDX]:.2f}')
-
-    if order[FRIES_IDX] != "":
-        print(f'A {order[FRIES_IDX]} order of french fries for ${costs[FRIES_IDX]:.2f}')
-
-    if order[KETCHUP_IDX] > 0:
-        print(f'{order[KETCHUP_IDX]} ketchup packets for ${costs[KETCHUP_IDX]:.2f}')
-
-    # give a $1 discount if customer orders all three types of items
-    if order[SANDWICH_IDX] != '' and order[BEVERAGE_IDX] != '' and order[FRIES_IDX] != '':
-        print(f'order subtotal before discount: ${order[TOTAL_IDX]:.2f}')
-        print(f'You received a $1.00 discount because you ordered all three types of menu items')
-        order[TOTAL_IDX] -= 1.00
-
-    print(f'Your final total order cost is ${order[TOTAL_IDX]:.2f}')
 
 
 if __name__ == '__main__':
