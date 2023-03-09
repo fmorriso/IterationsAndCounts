@@ -143,7 +143,7 @@ class Order:
         category: str = 'fries'
         size: str = ''
         price: float = 0.0
-        madeSelection: bool = False
+        wantsFries: bool = False
 
         needYesNoChoice: bool = True
         while needYesNoChoice:
@@ -151,13 +151,13 @@ class Order:
             match response[0:1]:
                 case 'y':            
                     needYesNoChoice = False
-                    madeSelection = True
+                    wantsFries = True
                 case 'n':
                     needYesNoChoice = False
                 case _:
                     print('Invalid response. Valid responses are yes or no.  Try again.')
 
-            if madeSelection:
+            if wantsFries:
                 # build choices prompt
                 choices = 'What size french-fries would you like? '
                 for choice in Order.menu[category]:
@@ -189,7 +189,6 @@ class Order:
                             needChoice = False
                         case _:
                             print('invalid choice. try again')
-
                       
                 self.selections[Order.FRIES_IDX] = size
                 self.costs[Order.FRIES_IDX] = price

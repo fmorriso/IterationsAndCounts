@@ -7,68 +7,6 @@
 import sys
 
 from order import Order
-
-def getFrenchFries(menu, costs, order, idx, total_idx):
-    total: float = order[total_idx]
-    selected_french_fries: bool = False
-    size: str = ""
-    category: str = 'fries'
-    price: float = 0.0
-
-    needYesNoChoice: bool = True
-    while needYesNoChoice:
-        french_fries = input("Would you like fries? (yes or no): ").lower()
-        if french_fries.startswith('y'):
-            needYesNoChoice = False
-            selected_french_fries = True
-        elif french_fries.startswith('n'):
-            needYesNoChoice = False
-        else:
-            print('Invalid response. Valid responses are yes or no.  Try again.')
-
-        if selected_french_fries:
-
-            # build choices prompt
-            choices = 'What size french-fries would you like? '
-            for choice in menu[category]:
-                size = choice
-                price = menu[category][choice]
-                choices += f'{size}: ${price:.2f}, '
-            # remove trailing comma and replace with question mark
-            choices = f"{choices.removesuffix(', ')}?>"
-
-            needChoice = True
-            while needChoice:
-                response = input(choices).lower()
-                if response.startswith('s'):
-                    size = 'small'
-                    needChoice = False
-                    price = menu[category][size]
-                    mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
-                    if mega_size.startswith('y'):
-                        size = "large"
-                        price += 1
-                    total += price
-                elif response.startswith('m'):
-                    size = "medium"
-                    price = menu[category][size]
-                    total += price
-                    needChoice = False
-                elif response.startswith('l'):
-                    size = "large"
-                    price = menu[category][size]
-                    total += price
-                    needChoice = False
-                else:
-                    print('invalid choice. try again')
-
-    order[total_idx] = total
-
-    if selected_french_fries:
-        order[idx] = size
-        costs[idx] = price
-
-
 def getKetchupPackets(menu, costs, order, idx, total_idx):
     total: float = order[total_idx]
     category: str = 'ketchup'
