@@ -45,6 +45,10 @@ class Order:
         if self.selections[Order.BEVERAGE_IDX] != '':
             tostring += f'A {self.selections[Order.BEVERAGE_IDX]} beverage for ${self.costs[Order.BEVERAGE_IDX]:.2f}\n'
 
+        # include french fries size and cost
+        if self.selections[Order.FRIES_IDX] != '':
+            tostring += f'A {self.selections[Order.FRIES_IDX]} order of french fries for ${self.costs[Order.FRIES_IDX]:.2f}\n'
+
         # include total cost of the order
         tostring += f'Total: ${self.selections[Order.TOTAL_IDX]:.2f}'
         return tostring
@@ -52,7 +56,7 @@ class Order:
     def ask_sandwich_choice(self):
         category = 'sandwich'
         price: float = 0
-        sandwich = ''
+        sandwich: str = ''
 
         # build the choices prompt
         choices = 'Which type of sandwich:  '
@@ -64,29 +68,30 @@ class Order:
 
         waitingForChoice: bool = True
         while waitingForChoice:
-            sandwich = input(choices).lower()
-            if sandwich.startswith('c'):
-                sandwich = 'chicken'
-                price = Order.menu[category][sandwich]
-                waitingForChoice = False
-            elif sandwich.startswith('b'):
-                sandwich = 'beef'
-                price = Order.menu[category][sandwich]
-                waitingForChoice = False
-            elif sandwich.startswith('t'):
-                sandwich = 'tofu'
-                price = Order.menu[category][sandwich]
-                waitingForChoice = False
-            else:
-                print("You must choose a sandwich. Try again.")
+            sandwich = input(choices).lower()           
+            match sandwich[0:1]:
+                case 'c':
+                    sandwich = 'chicken'
+                    price = Order.menu[category][sandwich]
+                    waitingForChoice = False
+                case 'b':
+                    sandwich = 'beef'
+                    price = Order.menu[category][sandwich]
+                    waitingForChoice = False
+                case 't':
+                    sandwich = 'tofu'
+                    price = Order.menu[category][sandwich]
+                    waitingForChoice = False
+                case _:
+                    print("You must choose a sandwich. Try again.")
 
         self.selections[Order.SANDWICH_IDX] = sandwich
         self.costs[Order.SANDWICH_IDX] = price
         self.selections[Order.TOTAL_IDX] += price
 
     def ask_beverage_choice(self):
-        price: float = 0
         category: str = 'beverage'
+        price: float = 0
         selected_a_beverage: bool = False
         size: str = ''
 
@@ -133,3 +138,59 @@ class Order:
             self.selections[Order.BEVERAGE_IDX] = size
             self.costs[Order.BEVERAGE_IDX] = price
             self.selections[Order.TOTAL_IDX] += price
+
+    def ask_fries_choice(self):
+        category: str = 'fries'
+        size: str = ''
+        price: float = 0.0
+        madeSelection: bool = False
+
+        needYesNoChoice: bool = True
+        while needYesNoChoice:
+            response = input("Would you like fries? (yes or no):>").lower()
+            match response[0:1]:
+                case 'y':            
+                    needYesNoChoice = False
+                    madeSelection = True
+                case 'n':
+                    needYesNoChoice = False
+                case _:
+                    print('Invalid response. Valid responses are yes or no.  Try again.')
+
+            if madeSelection:
+                # build choices prompt
+                choices = 'What size french-fries would you like? '
+                for choice in Order.menu[category]:
+                    size = choice
+                    price = Order.menu[category][choice]
+                    choices += f'{size}: ${price:.2f}, '
+                # remove trailing comma and replace with question mark
+                choices = f"{choices.removesuffix(', ')}?>"
+
+                needChoice = True
+                while needChoice:
+                    response = input(choices).lower()
+                    match response[0:1]:
+                        case 's':
+                            size = 'small'
+                            needChoice = False
+                            price = Order.menu[category][size]
+                            mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
+                            if mega_size.startswith('y'):
+                                size = "large"
+                                price += 1                        
+                        case 'm':
+                            size = "medium"
+                            price = Order.menu[category][size]                        
+                            needChoice = False
+                        case 'l':
+                            size = "large"
+                            price = Order.menu[category][size]                       
+                            needChoice = False
+                        case _:
+                            print('invalid choice. try again')
+
+                      
+                self.selections[Order.FRIES_IDX] = size
+                self.costs[Order.FRIES_IDX] = price
+                self.selections[Order.TOTAL_IDX] += price  

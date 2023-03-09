@@ -13,9 +13,9 @@ def getFrenchFries(menu, costs, order, idx, total_idx):
     selected_french_fries: bool = False
     size: str = ""
     category: str = 'fries'
-    cost: float = 0.0
+    price: float = 0.0
 
-    needYesNoChoice = True
+    needYesNoChoice: bool = True
     while needYesNoChoice:
         french_fries = input("Would you like fries? (yes or no): ").lower()
         if french_fries.startswith('y'):
@@ -43,21 +43,21 @@ def getFrenchFries(menu, costs, order, idx, total_idx):
                 if response.startswith('s'):
                     size = 'small'
                     needChoice = False
-                    cost = menu[category][size]
+                    price = menu[category][size]
                     mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
                     if mega_size.startswith('y'):
                         size = "large"
-                        cost += 1
-                    total += cost
+                        price += 1
+                    total += price
                 elif response.startswith('m'):
                     size = "medium"
-                    cost = menu[category][size]
-                    total += cost
+                    price = menu[category][size]
+                    total += price
                     needChoice = False
                 elif response.startswith('l'):
                     size = "large"
-                    cost = menu[category][size]
-                    total += cost
+                    price = menu[category][size]
+                    total += price
                     needChoice = False
                 else:
                     print('invalid choice. try again')
@@ -66,62 +66,7 @@ def getFrenchFries(menu, costs, order, idx, total_idx):
 
     if selected_french_fries:
         order[idx] = size
-        costs[idx] = cost
-
-
-def getBeverage(menu, costs, order, idx, total_idx):
-    total: float = order[total_idx]
-    price: float = 0
-    category: str = 'beverage'
-    selected_a_beverage: bool = False
-    size: str = ''
-
-    needYesNoChoice: bool = True
-    while needYesNoChoice:
-        response: str = input("Would you like a beverage? (yes or no): ").lower()
-        match response[0:1]:
-            case 'y':
-                needYesNoChoice = False
-                selected_a_beverage = True
-            case 'n':
-                needYesNoChoice = False
-            case _:
-                print('Invalid response. Valid responses are yes or no.  Try again.')
-
-    if selected_a_beverage:
-        # build the choices prompt
-        choices = 'What size beverage would you like? '
-        for choice in menu[category]:
-            price = menu[category][choice]
-            choices += f'{choice}: ${price:.2f}, '
-        # remove trailing comma and replace with question mark
-        choices = f"{choices.removesuffix(', ')}?>"
-
-        waitingForSize = True
-        while waitingForSize:
-            response = input(choices).lower()
-            match response[0:1]:
-                case 's':
-                    size = "small"
-                    price = menu[category][size]
-                    waitingForSize = False
-                case 'm':
-                    size = "medium"
-                    price = menu[category][size]
-                    waitingForSize = False
-                case 'l':
-                    size = "large"
-                    price = menu[category][size]
-                    waitingForSize = False
-                case _:
-                    print("Invalid beverage size, try again.")
-
-    if selected_a_beverage:
-        order[idx] = size
         costs[idx] = price
-        total += price
-
-    order[total_idx] = total
 
 
 def getKetchupPackets(menu, costs, order, idx, total_idx):
@@ -150,6 +95,7 @@ def getOrder():
     order: Order = Order()
     order.ask_sandwich_choice()
     order.ask_beverage_choice()
+    order.ask_fries_choice()
     return order
 
 
