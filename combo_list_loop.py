@@ -34,6 +34,7 @@ def getOrder():
     order.ask_sandwich_choice()
     order.ask_beverage_choice()
     order.ask_fries_choice()
+    order.ask_ketchup_choice()
     return order
 
 

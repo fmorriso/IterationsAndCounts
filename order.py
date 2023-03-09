@@ -193,3 +193,6 @@ class Order:
                 self.selections[Order.FRIES_IDX] = size
                 self.costs[Order.FRIES_IDX] = price
                 self.selections[Order.TOTAL_IDX] += price  
+
+    def ask_ketchup_choice(self):
+        pass
