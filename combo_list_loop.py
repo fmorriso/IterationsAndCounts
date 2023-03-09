@@ -208,7 +208,7 @@ def getOrders():
                     needYesNoChoice = False
                     keepOrdering = False
                 case _:
-                    print('Invalid respsonse.  Valid responses are yes or no')
+                    print('Invalid response.  Valid responses are yes or no')
 
     for order in orders:
         print(order)
