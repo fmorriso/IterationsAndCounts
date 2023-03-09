@@ -8,45 +8,6 @@ import sys
 
 from order import Order
 
-
-def getSandwich(menu, costs, order, idx, total_idx):
-    total = order[total_idx]
-    sandwich_cost = 0
-    category = 'sandwich'
-    sandwich = ''
-
-    # build the choices prompt
-    choices = 'Which type of sandwich:  '
-    for choice in menu[category]:
-        price = menu[category][choice]
-        choices += f'{choice}: ${price:.2f}, '
-    # remove trailing comma and replace with question mark
-    choices = f"{choices.removesuffix(', ')}?>"
-
-    waitingForChoice = True
-    while waitingForChoice:
-        sandwich = input(choices).lower()
-        if sandwich.startswith('c'):
-            sandwich = 'chicken'
-            sandwich_cost = menu[category][sandwich]
-            waitingForChoice = False
-        elif sandwich.startswith('b'):
-            sandwich = 'beef'
-            sandwich_cost = menu[category][sandwich]
-            waitingForChoice = False
-        elif sandwich.startswith('t'):
-            sandwich = 'tofu'
-            sandwich_cost = menu['sandwich'][sandwich]
-            waitingForChoice = False
-        else:
-            print("You must choose a sandwich. Try again.")
-
-    total += sandwich_cost
-    order[idx] = sandwich
-    costs[idx] = sandwich_cost
-    order[total_idx] += total
-
-
 def getFrenchFries(menu, costs, order, idx, total_idx):
     total: float = order[total_idx]
     selected_french_fries: bool = False
@@ -188,6 +149,7 @@ def getKetchupPackets(menu, costs, order, idx, total_idx):
 def getOrder():
     order: Order = Order()
     order.ask_sandwich_choice()
+    order.ask_beverage_choice()
     return order
 
 
@@ -198,6 +160,7 @@ def getOrders():
     while keepOrdering:
         order = getOrder()
         orders.append(order)
+        print(order)
         needYesNoChoice: bool = True
         while needYesNoChoice:
             yn: str = input('Do you want to make another order?>').lower()
@@ -209,9 +172,6 @@ def getOrders():
                     keepOrdering = False
                 case _:
                     print('Invalid response.  Valid responses are yes or no')
-
-    for order in orders:
-        print(order)
 
 def getOrdersNew():
     #  sandwich = 0, beverage = 1, fries = 2, ketchup =3, total = 4

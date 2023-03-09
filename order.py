@@ -35,12 +35,23 @@ class Order:
 
     # toString()
     def __str__(self) -> str:
-        return 'TODO: *** CODE NEEDED HERE ***'
+        tostring: str = 'Your order:\n'
+
+        # include sandwich selection and cost
+        if self.selections[Order.SANDWICH_IDX] != '':
+            tostring += f'A {self.selections[Order.SANDWICH_IDX]} sandwich for ${self.costs[Order.SANDWICH_IDX]:.2f}\n'
+
+        # include beverage size and cost
+        if self.selections[Order.BEVERAGE_IDX] != '':
+            tostring += f'A {self.selections[Order.BEVERAGE_IDX]} beverage for ${self.costs[Order.BEVERAGE_IDX]:.2f}\n'
+
+        # include total cost of the order
+        tostring += f'Total: ${self.selections[Order.TOTAL_IDX]:.2f}'
+        return tostring
 
     def ask_sandwich_choice(self):
-        total: float = self.selections[Order.TOTAL_IDX]
-        sandwich_cost: float = 0
         category = 'sandwich'
+        price: float = 0
         sandwich = ''
 
         # build the choices prompt
@@ -56,19 +67,69 @@ class Order:
             sandwich = input(choices).lower()
             if sandwich.startswith('c'):
                 sandwich = 'chicken'
-                sandwich_cost = Order.menu[category][sandwich]
+                price = Order.menu[category][sandwich]
                 waitingForChoice = False
             elif sandwich.startswith('b'):
                 sandwich = 'beef'
-                sandwich_cost = Order.menu[category][sandwich]
+                price = Order.menu[category][sandwich]
                 waitingForChoice = False
             elif sandwich.startswith('t'):
                 sandwich = 'tofu'
-                sandwich_cost = Order.menu[category][sandwich]
+                price = Order.menu[category][sandwich]
                 waitingForChoice = False
             else:
                 print("You must choose a sandwich. Try again.")
 
         self.selections[Order.SANDWICH_IDX] = sandwich
-        self.costs[Order.SANDWICH_IDX] = sandwich_cost
-        self.selections[Order.TOTAL_IDX] += sandwich_cost
+        self.costs[Order.SANDWICH_IDX] = price
+        self.selections[Order.TOTAL_IDX] += price
+
+    def ask_beverage_choice(self):
+        price: float = 0
+        category: str = 'beverage'
+        selected_a_beverage: bool = False
+        size: str = ''
+
+        needYesNoChoice: bool = True
+        while needYesNoChoice:
+            response: str = input("Would you like a beverage? (yes or no): >").lower()
+            match response[0:1]:
+                case 'y':
+                    needYesNoChoice = False
+                    selected_a_beverage = True
+                case 'n':
+                    needYesNoChoice = False
+                case _:
+                    print('Invalid response. Valid responses are yes or no.  Try again.')
+
+        if selected_a_beverage:
+            # build the choices prompt
+            choices = 'What size beverage would you like? '
+            for choice in Order.menu[category]:
+                price = Order.menu[category][choice]
+                choices += f'{choice}: ${price:.2f}, '
+            # remove trailing comma and replace with question mark
+            choices = f"{choices.removesuffix(', ')}?>"
+
+            waitingForSize: bool = True
+            while waitingForSize:
+                response = input(choices).lower()
+                match response[0:1]:
+                    case 's':
+                        size = "small"
+                        price = Order.menu[category][size]
+                        waitingForSize = False
+                    case 'm':
+                        size = "medium"
+                        price = Order.menu[category][size]
+                        waitingForSize = False
+                    case 'l':
+                        size = "large"
+                        price = Order.menu[category][size]
+                        waitingForSize = False
+                    case _:
+                        print("Invalid beverage size, try again.")
+
+            self.selections[Order.BEVERAGE_IDX] = size
+            self.costs[Order.BEVERAGE_IDX] = price
+            self.selections[Order.TOTAL_IDX] += price
