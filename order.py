@@ -24,6 +24,12 @@ class Order:
         self.selections = ["", "", "", 0, 0.0]
         self.costs: list[float] = [0.0, 0.0, 0.0, 0.0]
         self.gets_discount: bool = False
+        # pull in menu when first order is created
+        if len(Order.Menu) == 0:
+            Order.loadMenu()
+
+    @staticmethod
+    def loadMenu():
         # pull in the menu from a JSON file
         with open("menu.json", "r") as read_file:
             Order.Menu = json.load(read_file)
