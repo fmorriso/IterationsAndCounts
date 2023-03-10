@@ -30,13 +30,14 @@ class Order:
     # constructor
     def __init__(self):
         Order.order_id += 1
+        self.orderId = Order.order_id
         self.selections = ["", "", "", 0, 0.0]
         self.costs: list[float] = [0.0, 0.0, 0.0, 0.0]
         self.gets_discount: bool = False
 
     # toString()
     def __str__(self) -> str:
-        tostring: str = 'Your order:\n'
+        tostring: str = f'Order #{self.orderId}:\n'
 
         # include sandwich selection and cost
         if self.selections[Order.SANDWICH_IDX] != '':
@@ -231,3 +232,4 @@ class Order:
             return
         self.gets_discount = True
         self.selections[Order.TOTAL_IDX] -= 1
+
