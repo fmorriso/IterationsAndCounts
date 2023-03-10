@@ -2,9 +2,12 @@
 # Author: Fred Morrison
 # Date written: 2023-03-08
 # Description: A class that encapsulates all aspects of a single order
-from menu import Menu
+
+import json
+
 
 class Order:
+    Menu = {}
     order_id: int = 0
 
     # positional indexes within the order and costs lists
@@ -21,6 +24,9 @@ class Order:
         self.selections = ["", "", "", 0, 0.0]
         self.costs: list[float] = [0.0, 0.0, 0.0, 0.0]
         self.gets_discount: bool = False
+        # pull in the menu from a JSON file
+        with open("menu.json", "r") as read_file:
+            Order.Menu = json.load(read_file)
 
     # toString()
     def __str__(self) -> str:
@@ -59,8 +65,8 @@ class Order:
 
         # build the choices prompt
         choices = 'Which type of sandwich:  '
-        for choice in Menu[category]:
-            price = Menu[category][choice]
+        for choice in Order.Menu[category]:
+            price = Order.Menu[category][choice]
             choices += f'{choice}: ${price:.2f}, '
         # remove trailing comma and replace with question mark
         choices = f"{choices.removesuffix(', ')}?>"
@@ -71,15 +77,15 @@ class Order:
             match sandwichChoice[0:1]:
                 case 'c':
                     sandwichChoice = 'chicken'
-                    price = Menu[category][sandwichChoice]
+                    price = Order.Menu[category][sandwichChoice]
                     waitingForChoice = False
                 case 'b':
                     sandwichChoice = 'beef'
-                    price = Menu[category][sandwichChoice]
+                    price = Order.Menu[category][sandwichChoice]
                     waitingForChoice = False
                 case 't':
                     sandwichChoice = 'tofu'
-                    price = Menu[category][sandwichChoice]
+                    price = Order.Menu[category][sandwichChoice]
                     waitingForChoice = False
                 case _:
                     print("You must choose a sandwich. Try again.")
@@ -109,8 +115,8 @@ class Order:
         if selected_a_beverage:
             # build the choices prompt
             choices = 'What size beverage would you like? '
-            for choice in Menu[category]:
-                price = Menu[category][choice]
+            for choice in Order.Menu[category]:
+                price = Order.Menu[category][choice]
                 choices += f'{choice}: ${price:.2f}, '
             # remove trailing comma and replace with question mark
             choices = f"{choices.removesuffix(', ')}?>"
@@ -121,15 +127,15 @@ class Order:
                 match response[0:1]:
                     case 's':
                         size = "small"
-                        price = Menu[category][size]
+                        price = Order.Menu[category][size]
                         waitingForSize = False
                     case 'm':
                         size = "medium"
-                        price = Menu[category][size]
+                        price = Order.Menu[category][size]
                         waitingForSize = False
                     case 'l':
                         size = "large"
-                        price = Menu[category][size]
+                        price = Order.Menu[category][size]
                         waitingForSize = False
                     case _:
                         print("Invalid beverage size, try again.")
@@ -159,9 +165,9 @@ class Order:
             if wantsFries:
                 # build choices prompt
                 choices = 'What size french-fries would you like? '
-                for choice in Menu[category]:
+                for choice in Order.Menu[category]:
                     size = choice
-                    price = Menu[category][choice]
+                    price = Order.Menu[category][choice]
                     choices += f'{size}: ${price:.2f}, '
                 # remove trailing comma and replace with question mark
                 choices = f"{choices.removesuffix(', ')}?>"
@@ -173,18 +179,18 @@ class Order:
                         case 's':
                             size = 'small'
                             needChoice = False
-                            price = Menu[category][size]
+                            price = Order.Menu[category][size]
                             mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
                             if mega_size.startswith('y'):
                                 size = "large"
                                 price += 1
                         case 'm':
                             size = "medium"
-                            price = Menu[category][size]
+                            price = Order.Menu[category][size]
                             needChoice = False
                         case 'l':
                             size = "large"
-                            price = Menu[category][size]
+                            price = Order.Menu[category][size]
                             needChoice = False
                         case _:
                             print('invalid choice. try again')
@@ -208,7 +214,7 @@ class Order:
 
         self.selections[Order.KETCHUP_IDX] = ketchupPackets
         if ketchupPackets > 0:
-            price: float = ketchupPackets * Menu[category]
+            price: float = ketchupPackets * Order.Menu[category]
             self.costs[Order.KETCHUP_IDX] = price
             self.selections[Order.TOTAL_IDX] += price
 

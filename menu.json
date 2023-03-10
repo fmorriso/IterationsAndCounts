@@ -1,0 +1,18 @@
+{
+    "sandwich": {
+        "chicken": 5.25,
+        "beef": 6.25,
+        "tofu": 5.75
+    },
+    "beverage": {
+        "small": 1.00,
+        "medium": 1.75,
+        "large": 2.25
+    },
+    "fries": {
+        "small": 1.00,
+        "medium": 1.50,
+        "large": 2.00
+    },
+    "ketchup": 0.25
+}
