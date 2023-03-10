@@ -9,6 +9,8 @@ import sys
 from order import Order
 
 orders: list[Order] = []
+
+# generate a single order
 def getOrder():
     order: Order = Order()
     order.ask_sandwich_choice()
@@ -24,9 +26,11 @@ def getOrders():
 
     keepOrdering: bool = True
     while keepOrdering:
+
         order = getOrder()
         orders.append(order)
         print(order)
+
         needYesNoChoice: bool = True
         while needYesNoChoice:
             yn: str = input('Do you want to make another order?>').lower()
@@ -40,6 +44,7 @@ def getOrders():
                     print('Invalid response.  Valid responses are yes or no')
 
 
+# give user the option to review every order
 def ask_to_review_orders():
     reviewOrders: bool = False
     needYesNoDecision: bool = True
