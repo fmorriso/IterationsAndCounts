@@ -10,7 +10,7 @@ class Order:
     Menu = {}
     order_id: int = 0
 
-    # positional indexes within the order and costs lists
+    # positional indexes within the selections and costs lists
     SANDWICH_IDX = 0
     BEVERAGE_IDX = 1
     FRIES_IDX = 2
