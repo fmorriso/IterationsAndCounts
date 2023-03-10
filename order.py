@@ -13,6 +13,12 @@ class Order:
     KETCHUP_IDX = 3
     TOTAL_IDX = 4
 
+    # The menu of available items.
+    # structure:
+    #   first level is the item category.
+    #   second level is the type/size and corresponding price unless
+    #   there is only one type/size in which case the price is associate
+    #   with the category, such as ketchup.
     menu = {
         'sandwich': {
             'chicken': 5.25,
