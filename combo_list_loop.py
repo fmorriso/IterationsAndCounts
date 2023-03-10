@@ -3,12 +3,12 @@
 # Date written: 2023-03-08
 # Description: Modify the Combo Menu code using the loop of your choice to make it so that
 #              the user has the option to keep entering more orders.
-import json
 import sys
 
 from order import Order
 
 orders: list[Order] = []
+
 
 # generate a single order
 def getOrder():
@@ -23,7 +23,6 @@ def getOrder():
 
 # main program starts here
 def getOrders():
-
     keepOrdering: bool = True
     while keepOrdering:
 
@@ -66,8 +65,10 @@ def ask_to_review_orders():
             print(order)
             print('-' * 20)
 
+
 if __name__ == '__main__':
-    print(f'Using Python version {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} release level {sys.version_info.releaselevel}')
+    print(
+        f'Using Python version {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} release level {sys.version_info.releaselevel}')
 
     getOrders()
     ask_to_review_orders()
