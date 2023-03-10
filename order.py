@@ -1,3 +1,8 @@
+# Project 3.2.3 - Combo Menu Iteration with Loops
+# Author: Fred Morrison
+# Date written: 2023-03-08
+# Description: A class that encapsulates all aspects of a single order
+
 class Order:
     order_id: int = 0
 
