@@ -1,15 +1,16 @@
 # Project 3.2.3 - Combo Menu Iteration with Loops
 # Author: Fred Morrison
 # Date written: 2023-03-10
-# Description: A class that encapsulates all aspects of the menu of available food and beverages
+# Description: A class that encapsulates all aspects of the menu of 
+#              available food and beverage choices.
 
 
 # The menu of available items.
 # structure:
 #   first level is the item category.
 #   second level is the type/size and corresponding price unless
-#   there is only one type/size in which case the price is associate
-#   with the category, such as ketchup.
+#   there is only one type/size in which case the price is directly
+#   entered with the category, such as ketchup.
 
 Menu = {
     'sandwich': {
