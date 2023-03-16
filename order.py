@@ -2,6 +2,9 @@
 # Author: Fred Morrison
 # Date written: 2023-03-08
 # Description: A class that encapsulates all aspects of a single order
+# Modifications:
+#   2023-03-15 - made loading of menu selections from external file private.
+
 
 import json
 
@@ -26,10 +29,11 @@ class Order:
         self.gets_discount: bool = False
         # pull in menu when first order is created
         if len(Order.Menu) == 0:
-            Order.loadMenu()
+            Order.__loadMenu()
 
+    # private method to load the menu selections from an external flat file
     @staticmethod
-    def loadMenu():
+    def __loadMenu():
         # pull in the menu from a JSON file
         with open("menu.json", "r") as read_file:
             Order.Menu = json.load(read_file)
@@ -231,3 +235,6 @@ class Order:
             return
         self.gets_discount = True
         self.selections[Order.TOTAL_IDX] -= 1
+
+    def add(self, a: int, b: int) -> int:
+        return a + b
