@@ -8,6 +8,8 @@
 
 import json
 
+from size import Size
+
 
 class Order:
     Menu = {}
@@ -136,15 +138,15 @@ class Order:
                 response = input(choices).lower()
                 match response[0:1]:
                     case 's':
-                        size = "small"
+                        size = Size.SMALL.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
                     case 'm':
-                        size = "medium"
+                        size = Size.MEDIUM.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
                     case 'l':
-                        size = "large"
+                        size = Size.LARGE
                         price = Order.Menu[category][size]
                         waitingForSize = False
                     case _:
@@ -187,19 +189,19 @@ class Order:
                     response = input(choices).lower()
                     match response[0:1]:
                         case 's':
-                            size = 'small'
+                            size = Size.SMALL.value
                             needChoice = False
                             price = Order.Menu[category][size]
                             mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
                             if mega_size.startswith('y'):
-                                size = "large"
+                                size = Size.LARGE.value
                                 price += 1
                         case 'm':
-                            size = "medium"
+                            size = Size.MEDIUM.value
                             price = Order.Menu[category][size]
                             needChoice = False
                         case 'l':
-                            size = "large"
+                            size = Size.LARGE.value
                             price = Order.Menu[category][size]
                             needChoice = False
                         case _:
