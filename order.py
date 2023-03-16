@@ -33,7 +33,9 @@ class Order:
         if len(Order.Menu) == 0:
             Order.__loadMenu()
 
-    # private method to load the menu selections from an external flat file
+    # private static method to load the menu selections from an external flat file.
+    # Called only once when the very first order is created since the menu is a
+    # shared resource available to any/all orders.
     @staticmethod
     def __loadMenu():
         # pull in the menu from a JSON file
