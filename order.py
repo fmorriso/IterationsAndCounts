@@ -15,7 +15,8 @@ class Order:
     Menu = {}
     order_id: int = 0
 
-    # positional indexes within the order and costs lists
+    # positional indexes within the order and costs lists.
+    # We use these instead of "magic number indexes" like [3] or [2] which lack and meaningful context.
     SANDWICH_IDX = 0
     BEVERAGE_IDX = 1
     FRIES_IDX = 2
@@ -34,6 +35,8 @@ class Order:
             Order.__loadMenu()
 
     # private static method to load the menu selections from an external flat file.
+    # The information is stored in JSON format which lends itself to loading directly
+    # into a python dictionary for convenient indexed lookup.
     # Called only once when the very first order is created since the menu is a
     # shared resource available to any/all orders.
     @staticmethod
@@ -42,7 +45,7 @@ class Order:
         with open("menu.json", "r") as read_file:
             Order.Menu = json.load(read_file)
 
-    # toString()
+    # toString() representation of the current Order instance
     def __str__(self) -> str:
         tostring: str = f'Order #{self.orderId}:\n'
 
@@ -72,6 +75,8 @@ class Order:
         tostring += f'Total: ${self.selections[Order.TOTAL_IDX]:.2f}'
         return tostring
 
+    # Ask which type of sandwich the customer wants.
+    # Note: sandwich choice is mandatory. We don't sell drinks and french fries by themselves.
     def ask_sandwich_choice(self):
         category: str = 'sandwich'
         price: float = 0
@@ -108,6 +113,7 @@ class Order:
         self.costs[Order.SANDWICH_IDX] = price
         self.selections[Order.TOTAL_IDX] += price
 
+    # ask the customer if they want a beverage with their order
     def ask_beverage_choice(self):
         category: str = 'beverage'
         price: float = 0
@@ -158,6 +164,7 @@ class Order:
             self.costs[Order.BEVERAGE_IDX] = price
             self.selections[Order.TOTAL_IDX] += price
 
+    # ask the customer if they want french fries with their order
     def ask_fries_choice(self):
         category: str = 'fries'
         size: str = ''
@@ -213,6 +220,7 @@ class Order:
                 self.costs[Order.FRIES_IDX] = price
                 self.selections[Order.TOTAL_IDX] += price
 
+    # ask if the user how many ketchup packets, if any, they want, within reason.
     def ask_ketchup_choice(self):
         category: str = 'ketchup'
         ketchupPackets: int = 0
@@ -232,7 +240,11 @@ class Order:
             self.costs[Order.KETCHUP_IDX] = price
             self.selections[Order.TOTAL_IDX] += price
 
+    # Check to see if the customer qualifies for a combo discount
     def check_for_discount(self):
+        # if any of the three selections that constitute a combo are still empty,
+        # indicating the customer did not make a selection for that item,
+        # then the customer does not qualify for a discount.
         if self.selections[Order.SANDWICH_IDX] == '' \
                 or self.selections[Order.BEVERAGE_IDX] == '' \
                 or self.selections[Order.FRIES_IDX] == '':
