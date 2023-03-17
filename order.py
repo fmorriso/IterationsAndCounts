@@ -148,7 +148,7 @@ class Order:
                         price = Order.Menu[category][size]
                         waitingForSize = False
                     case 'l':
-                        size = Size.LARGE
+                        size = Size.LARGE.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
                     case _:
@@ -233,9 +233,9 @@ class Order:
             self.selections[Order.TOTAL_IDX] += price
 
     def check_for_discount(self):
-        if self.selections[Order.SANDWICH_IDX] == '' or \
-                self.selections[Order.BEVERAGE_IDX] == '' \
-                or self.selections[Order.FRIES_IDX] == '':
+        if self.selections[Order.SANDWICH_IDX] == '' \
+            or self.selections[Order.BEVERAGE_IDX] == '' \
+            or    self.selections[Order.FRIES_IDX] == '':
             return
         self.gets_discount = True
         self.selections[Order.TOTAL_IDX] -= 1

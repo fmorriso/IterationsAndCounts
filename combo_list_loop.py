@@ -61,6 +61,7 @@ def ask_to_review_orders():
     if reviewOrders:
         print('Here are all of the orders:')
         print('-' * 20)
+        order: Order = []
         for order in orders:
             print(order)
             print('-' * 20)
