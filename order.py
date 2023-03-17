@@ -234,8 +234,8 @@ class Order:
 
     def check_for_discount(self):
         if self.selections[Order.SANDWICH_IDX] == '' \
-            or self.selections[Order.BEVERAGE_IDX] == '' \
-            or    self.selections[Order.FRIES_IDX] == '':
+                or self.selections[Order.BEVERAGE_IDX] == '' \
+                or self.selections[Order.FRIES_IDX] == '':
             return
         self.gets_discount = True
         self.selections[Order.TOTAL_IDX] -= 1
