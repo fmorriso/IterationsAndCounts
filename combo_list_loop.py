@@ -11,7 +11,7 @@ orders: list[Order] = []
 
 
 # generate a single order
-def getOrder():
+def getOrder() -> Order:
     order: Order = Order()
     order.ask_sandwich_choice()
     order.ask_beverage_choice()
