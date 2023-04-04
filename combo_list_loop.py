@@ -33,6 +33,7 @@ def getOrders():
         needYesNoChoice: bool = True
         while needYesNoChoice:
             yn: str = input('Do you want to make another order?>').lower()
+            """
             match yn[0:1]:
                 case 'y':
                     needYesNoChoice = False
@@ -41,6 +42,16 @@ def getOrders():
                     keepOrdering = False
                 case _:
                     print('Invalid response.  Valid responses are yes or no')
+            """
+            yn = yn[0:1]
+            if yn == 'y':
+                needYesNoChoice = False
+            elif yn == 'n':
+                needYesNoChoice = False
+                keepOrdering = False
+            else:
+                print('Invalid response.  Valid responses are yes or no')
+
 
 
 # give user the option to review every order
@@ -66,10 +77,18 @@ def ask_to_review_orders():
             print(order)
             print('-' * 20)
 
+def get_python_version() -> float:
+    pyversion: float = float(sys.version_info.major)
+    divsor: float = 10.0
+    if sys.version_info.minor > 9:
+        divsor = 100.0
+    pyversion += float(sys.version_info.minor/divsor)
+    return pyversion
 
 if __name__ == '__main__':
     print(
         f'Using Python version {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} release level {sys.version_info.releaselevel}')
+
 
     getOrders()
     ask_to_review_orders()

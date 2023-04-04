@@ -34,7 +34,7 @@ class Order:
         if len(Order.Menu) == 0:
             Order.__loadMenu()
 
-    # private static method to load the menu selections from an external flat file.
+    # private static method to load the menu selections from an external flat text file.
     # The information is stored in JSON format which lends itself to loading directly
     # into a python dictionary for convenient indexed lookup.
     # Called only once when the very first order is created since the menu is a
@@ -201,7 +201,7 @@ class Order:
                             size = Size.SMALL.value
                             needChoice = False
                             price = Order.Menu[category][size]
-                            mega_size = input("Would you like to MEGA-Size your fries? (yes or no): ").lower()
+                            mega_size = input("Would you like to MEGA-Size your fries? (yes or no):>").lower()
                             if mega_size.startswith('y'):
                                 size = Size.LARGE.value
                                 price += 1
