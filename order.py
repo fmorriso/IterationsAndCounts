@@ -8,7 +8,7 @@
 
 import json,sys
 
-from size import Size
+from size import Size, SizeAbbrev
 
 
 class Order:
@@ -45,6 +45,28 @@ class Order:
         with open("menu.json", "r") as read_file:
             Order.Menu = json.load(read_file)
 
+    @staticmethod
+    def get_yes_no_response(prompt: str) -> bool:
+        """
+
+        :rtype: bool
+        """
+        needYesNoChoice: bool = True
+        yn: bool = False
+        while needYesNoChoice:
+            response: str = input(prompt).lower()
+            match response[0:1]:
+                case 'y':
+                    yn = True
+                    needYesNoChoice = False
+                case 'n':
+                    yn = False
+                    needYesNoChoice = False
+                case _:
+                    print('Invalid response. Valid responses are yes or no.  Try again.')
+
+        return yn
+
     # toString() representation of the current Order instance
     def __str__(self) -> str:
         tostring: str = f'Order #{self.orderId}:\n'
@@ -78,10 +100,10 @@ class Order:
     @staticmethod
     def get_python_version() -> float:
         pyversion: float = float(sys.version_info.major)
-        divsor: float = 10.0
+        divisor: float = 10.0
         if sys.version_info.minor > 9:
-            divsor = 100.0
-        pyversion += float(sys.version_info.minor / divsor)
+            divisor = 100.0
+        pyversion += float(sys.version_info.minor / divisor)
         return pyversion
 
     def remove_suffix(self, text: str, suffix: str) -> str:
@@ -132,20 +154,8 @@ class Order:
     def ask_beverage_choice(self):
         category: str = 'beverage'
         price: float = 0
-        selected_a_beverage: bool = False
         size: str = ''
-
-        needYesNoChoice: bool = True
-        while needYesNoChoice:
-            response: str = input("Would you like a beverage? (yes or no): >").lower()
-            match response[0:1]:
-                case 'y':
-                    needYesNoChoice = False
-                    selected_a_beverage = True
-                case 'n':
-                    needYesNoChoice = False
-                case _:
-                    print('Invalid response. Valid responses are yes or no.  Try again.')
+        selected_a_beverage: bool = Order.get_yes_no_response("Would you like a beverage? (yes or no): >")
 
         if selected_a_beverage:
             # build the choices prompt
@@ -160,15 +170,15 @@ class Order:
             while waitingForSize:
                 response = input(choices).lower()
                 match response[0:1]:
-                    case 's':
+                    case SizeAbbrev.SMALL.value:
                         size = Size.SMALL.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
-                    case 'm':
+                    case SizeAbbrev.MEDIUM.value:
                         size = Size.MEDIUM.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
-                    case 'l':
+                    case SizeAbbrev.LARGE.value:
                         size = Size.LARGE.value
                         price = Order.Menu[category][size]
                         waitingForSize = False
