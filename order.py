@@ -194,52 +194,40 @@ class Order:
         category: str = 'fries'
         size: str = ''
         price: float = 0.0
-        wantsFries: bool = False
+        wantsFries: bool = Order.get_yes_no_response("Would you like fries? (yes or no):>")
 
-        needYesNoChoice: bool = True
-        while needYesNoChoice:
-            response = input("Would you like fries? (yes or no):>").lower()
-            match response[0:1]:
-                case 'y':
-                    needYesNoChoice = False
-                    wantsFries = True
-                case 'n':
-                    needYesNoChoice = False
-                case _:
-                    print('Invalid response. Valid responses are yes or no.  Try again.')
+        if wantsFries:
+            # build choices prompt
+            choices = 'What size french-fries would you like? '
+            for choice in Order.Menu[category]:
+                size = choice
+                price = Order.Menu[category][choice]
+                choices += f'{size}: ${price:.2f}, '
+            # remove trailing comma and replace with question mark
+            choices = f"{choices.removesuffix(', ')}?>"
 
-            if wantsFries:
-                # build choices prompt
-                choices = 'What size french-fries would you like? '
-                for choice in Order.Menu[category]:
-                    size = choice
-                    price = Order.Menu[category][choice]
-                    choices += f'{size}: ${price:.2f}, '
-                # remove trailing comma and replace with question mark
-                choices = f"{choices.removesuffix(', ')}?>"
-
-                needChoice = True
-                while needChoice:
-                    response = input(choices).lower()
-                    match response[0:1]:
-                        case 's':
-                            size = Size.SMALL.value
-                            needChoice = False
-                            price = Order.Menu[category][size]
-                            mega_size = input("Would you like to MEGA-Size your fries? (yes or no):>").lower()
-                            if mega_size.startswith('y'):
-                                size = Size.LARGE.value
-                                price += 1
-                        case 'm':
-                            size = Size.MEDIUM.value
-                            price = Order.Menu[category][size]
-                            needChoice = False
-                        case 'l':
+            needChoice = True
+            while needChoice:
+                response = input(choices).lower()
+                match response[0:1]:
+                    case 's':
+                        size = Size.SMALL.value
+                        needChoice = False
+                        price = Order.Menu[category][size]
+                        mega_size = input("Would you like to MEGA-Size your fries? (yes or no):>").lower()
+                        if mega_size.startswith('y'):
                             size = Size.LARGE.value
-                            price = Order.Menu[category][size]
-                            needChoice = False
-                        case _:
-                            print('invalid choice. try again')
+                            price += 1
+                    case 'm':
+                        size = Size.MEDIUM.value
+                        price = Order.Menu[category][size]
+                        needChoice = False
+                    case 'l':
+                        size = Size.LARGE.value
+                        price = Order.Menu[category][size]
+                        needChoice = False
+                    case _:
+                        print('invalid choice. try again')
 
                 self.selections[Order.FRIES_IDX] = size
                 self.costs[Order.FRIES_IDX] = price
@@ -250,7 +238,7 @@ class Order:
         category: str = 'ketchup'
         ketchupPackets: int = 0
 
-        needChoice: bool = True
+        needChoice: bool = Order.get_yes_no_response("How many ketchup packets would you like (up to 10)? Enter 0 if you don't want any.>")
         while needChoice:
             response = input("How many ketchup packets would you like (up to 10)? Enter 0 if you don't want any.>")
             if response.isnumeric() and 10 >= int(response) >= 0:
