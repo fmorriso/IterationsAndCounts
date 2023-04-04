@@ -6,7 +6,7 @@
 #   2023-03-15 - made loading of menu selections from external file private.
 
 
-import json
+import json,sys
 
 from size import Size
 
@@ -74,6 +74,21 @@ class Order:
         # include total cost of the order
         tostring += f'Total: ${self.selections[Order.TOTAL_IDX]:.2f}'
         return tostring
+
+    @staticmethod
+    def get_python_version() -> float:
+        pyversion: float = float(sys.version_info.major)
+        divsor: float = 10.0
+        if sys.version_info.minor > 9:
+            divsor = 100.0
+        pyversion += float(sys.version_info.minor / divsor)
+        return pyversion
+
+    def remove_suffix(self, text: str, suffix: str) -> str:
+        if self.get_python_version() > 3.9:
+            return text.removesuffix(suffix)
+        else:
+            return text.rstrip(suffix)
 
     # Ask which type of sandwich the customer wants.
     # Note: sandwich choice is mandatory. We don't sell drinks and french fries by themselves.
