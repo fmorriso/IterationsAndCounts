@@ -11,7 +11,7 @@ orders: list[Order] = []
 
 
 # generate a single order
-def getOrder() -> Order:
+def get_order() -> Order:
     order: Order = Order()
     order.ask_sandwich_choice()
     order.ask_beverage_choice()
@@ -22,16 +22,16 @@ def getOrder() -> Order:
 
 
 # main program starts here
-def getOrders():
+def get_orders():
     keepOrdering: bool = True
     while keepOrdering:
 
-        order = getOrder()
+        order = get_order()
         orders.append(order)
         print(order)
 
-        needYesNoChoice: bool = True
-        while needYesNoChoice:
+        need_yes_no_choice: bool = True
+        while need_yes_no_choice:
             yn: str = input('Do you want to make another order?>').lower()
             """
             match yn[0:1]:
@@ -45,9 +45,9 @@ def getOrders():
             """
             yn = yn[0:1]
             if yn == 'y':
-                needYesNoChoice = False
+                need_yes_no_choice = False
             elif yn == 'n':
-                needYesNoChoice = False
+                need_yes_no_choice = False
                 keepOrdering = False
             else:
                 print('Invalid response.  Valid responses are yes or no')
@@ -56,20 +56,20 @@ def getOrders():
 
 # give user the option to review every order
 def ask_to_review_orders():
-    reviewOrders: bool = False
-    needYesNoDecision: bool = True
-    while needYesNoDecision:
+    review_orders: bool = False
+    need_yes_no_decision: bool = True
+    while need_yes_no_decision:
         yn: str = input('Do you want to see all of the orders?>').lower()
         match yn[0:1]:
             case 'y':
-                needYesNoDecision = False
-                reviewOrders = True
+                need_yes_no_decision = False
+                review_orders = True
             case 'n':
-                needYesNoDecision = False
+                need_yes_no_decision = False
             case _:
                 print('Invalid response. Valid responses are yes or no. Try again.')
 
-    if reviewOrders:
+    if review_orders:
         print('Here are all of the orders:')
         print('-' * 20)
         order: Order = []
@@ -77,18 +77,13 @@ def ask_to_review_orders():
             print(order)
             print('-' * 20)
 
-def get_python_version() -> float:
-    pyversion: float = float(sys.version_info.major)
-    divsor: float = 10.0
-    if sys.version_info.minor > 9:
-        divsor = 100.0
-    pyversion += float(sys.version_info.minor/divsor)
-    return pyversion
+
+def get_python_version() -> str:
+    return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
 
 if __name__ == '__main__':
-    print(
-        f'Using Python version {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} release level {sys.version_info.releaselevel}')
+    print(f'Using Python version {get_python_version()}')
 
 
-    getOrders()
+    get_orders()
     ask_to_review_orders()
